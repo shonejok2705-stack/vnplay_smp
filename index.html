@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>VNPlay SMP — Máy chủ Minecraft Survival Việt Nam</title>
+  <meta name="description" content="Khám phá VNPlay SMP, một thế giới Minecraft Survival để khám phá, xây dựng và gặp gỡ bạn bè. Xem cách tham gia.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body data-ip="vnplaysmpvn.asia">
+
+  <!-- Bộ icon đơn sắc dùng chung (stroke = currentColor) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.5 8-8 9-4.5-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+      <symbol id="i-cube" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4.5-6.2"/></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h13l-3 4 3 4H5"/></symbol>
+      <symbol id="i-save" viewBox="0 0 24 24"><path d="M4 4h12l4 4v12H4z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+      <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+      <symbol id="i-pick" viewBox="0 0 24 24"><path d="M4 20l9-9M14 4c2 0 5 2 6 6M14 4l-4 4M20 10l-4 4"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+      <symbol id="i-expand" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol>
+      <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <canvas class="ambient" id="ambient" aria-hidden="true"></canvas>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#hero" class="brand" aria-label="VNPlay SMP — Trang chủ">
+        <svg class="brand__mark" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cube"/></svg>
+        <span class="brand__name">VNPlay <em>SMP</em></span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Điều hướng chính">
+        <a href="#story">Hành trình</a>
+        <a href="#gallery">Thư viện</a>
+        <a href="#features">Trải nghiệm</a>
+        <a href="#trust">Uy tín</a>
+        <a href="#rules">Cam kết</a>
+        <a href="#faq">Hỏi đáp</a>
+        <a href="#contact" class="nav__contact-link">Liên hệ ngay</a>
+      </nav>
+        <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
+
+      <div class="header__actions">
+        <a class="btn btn--primary btn--sm" href="#contact">
+          <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg><span>Liên hệ ngay</span>
+        </a>
+        <button type="button" class="icon-btn nav-toggle" id="nav-toggle" aria-label="Mở menu" aria-expanded="false" aria-controls="nav">
+          <svg class="ico ico--open" aria-hidden="true"><use href="#i-menu"/></svg>
+          <svg class="ico ico--close" aria-hidden="true"><use href="#i-x"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero__blocks" aria-hidden="true">
+        <span style="--x:8%;--y:18%;--s:1.1;--d:0s"></span>
+        <span style="--x:88%;--y:22%;--s:.8;--d:-3s"></span>
+        <span style="--x:15%;--y:72%;--s:.6;--d:-6s"></span>
+        <span style="--x:80%;--y:70%;--s:1.3;--d:-9s"></span>
+        <span style="--x:50%;--y:88%;--s:.7;--d:-4s"></span>
+        <span style="--x:35%;--y:10%;--s:.5;--d:-7s"></span>
+      </div>
+      <div class="container hero__inner">
+        <p class="eyebrow reveal">Minecraft Survival · Việt Nam</p>
+        <h1 class="hero__title reveal" data-split>Chơi tử tế.<br>Xây lâu dài.</h1>
+        <p class="hero__lead reveal">Một thế giới sinh tồn để bạn khám phá, dựng xây và gặp gỡ bạn bè. Vào chơi theo cách của bạn.</p>
+        <div class="hero__cta reveal">
+          <a class="btn btn--primary btn--lg" href="#contact">
+            <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg><span>Liên hệ ngay</span>
+          </a>
+          <a class="btn btn--ghost btn--lg" href="#gallery">
+            <svg class="ico" aria-hidden="true"><use href="#i-image"/></svg><span>Khám phá thế giới</span>
+          </a>
+        </div>
+
+        <div class="hero__preview reveal">
+          <div class="hero__frame">
+            <img src="./assets/images/shaders_sunset.jpg" alt="Thế giới Minecraft sống động với shaders chân thực" width="1600" height="1067" loading="eager">
+            <div class="hero__badge">
+              <span class="dot is-online" aria-hidden="true"></span>
+              <span>Một thế giới sinh tồn đang chờ bạn khám phá</span>
+            </div>
+            <a href="#gallery" class="hero__explore-btn" aria-label="Xem thư viện hình ảnh thế giới">
+              <svg class="ico" aria-hidden="true"><use href="#i-image"/></svg>
+              <span>Thư viện ảnh (17)</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="server-highlights reveal" id="server-highlights">
+          <div class="highlight-item">
+            <svg class="highlight-badge ico" aria-hidden="true"><use href="#i-zap"/></svg>
+            <div class="highlight-info">
+              <strong>Kết nối nội địa</strong>
+              <span>Máy chủ tại Việt Nam</span>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <svg class="highlight-badge ico" aria-hidden="true"><use href="#i-shield"/></svg>
+            <div class="highlight-info">
+              <strong>Bảo vệ công trình</strong>
+              <span>Công cụ ghi nhật ký khối</span>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <svg class="highlight-badge ico" aria-hidden="true"><use href="#i-globe"/></svg>
+            <div class="highlight-info">
+              <strong>Nhiều nền tảng</strong>
+              <span>Java và Bedrock</span>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <svg class="highlight-badge ico" aria-hidden="true"><use href="#i-cube"/></svg>
+            <div class="highlight-info">
+              <strong>Sinh tồn nguyên bản</strong>
+              <span>Tập trung vào hành trình chơi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="#story" class="scroll-hint" aria-label="Cuộn xuống">
+        <span></span>
+      </a>
+    </section>
+
+    <!-- SCROLLYTELLING -->
+    <section class="story" id="story">
+      <div class="container story__head">
+        <p class="eyebrow reveal">Hành trình</p>
+        <h2 class="reveal">Một ngày ở VNPlay SMP</h2>
+      </div>
+
+      <div class="container scrolly" id="scrolly">
+        <div class="scrolly__stage">
+          <div class="scene" id="scene" data-step="0" aria-label="Hình ảnh minh họa thế giới Minecraft">
+            <!-- Ảnh nền chân thực theo từng bước -->
+            <div class="scene__photos">
+              <img class="scene__photo is-active" data-photo="1" src="./assets/images/mountains.jpg" alt="06:00 Đặt chân vào thế giới - Đỉnh núi tuyết" loading="lazy">
+              <img class="scene__photo" data-photo="2" src="./assets/images/mountains.jpg" alt="09:00 Xây từng khối - Dựng nhà sinh tồn" loading="lazy">
+              <img class="scene__photo" data-photo="3" src="./assets/images/village.jpg" alt="14:00 Hàng xóm - Làng quê đông vui" loading="lazy">
+              <img class="scene__photo" data-photo="4" src="./assets/images/cathedral.jpg" alt="18:00 Đất bảo vệ - Công trình kiên cố" loading="lazy">
+              <img class="scene__photo" data-photo="5" src="./assets/images/shaders_sunset.jpg" alt="21:00 Đêm sự kiện - Pháo hoa rực rỡ" loading="lazy">
+            </div>
+            <div class="scene__tint"></div>
+
+            <!-- Canvas xây dựng Minecraft thật -->
+            <canvas class="scene__canvas" id="mc-canvas" width="600" height="450" aria-hidden="true"></canvas>
+
+            <!-- HUD thanh trạng thái trên cùng -->
+            <div class="mc-hud__top">
+              <div class="scene__label" id="scene-label">06:00 · Đặt chân</div>
+              <div class="mc-f3" id="mc-f3" aria-hidden="true">
+                <span>XYZ: 148.4 / 68.0 / -285.6</span>
+                <span class="mc-f3__biome">Biome: Jagged Peaks</span>
+              </div>
+              <div class="mc-top-actions">
+                <button type="button" class="mc-action-btn" id="mc-btn-autobuild" title="Tự động xây nhà gỗ mẫu">
+                  <span>🏠 Xây mẫu</span>
+                </button>
+                <button type="button" class="mc-action-btn" id="mc-btn-clear" title="Dọn sạch để tự do xây dựng">
+                  <span>🧹 Dọn sạch</span>
+                </button>
+                <button type="button" class="mc-action-btn mc-action-btn--sound" id="mc-btn-sound" title="Bật/Tắt âm thanh Minecraft">
+                  <span id="mc-sound-icon">🔊</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Thông báo trong game (Action Bar) -->
+            <div class="mc-actionbar" id="mc-actionbar" aria-live="polite">
+              <span id="mc-actionbar-text">💡 Nhấp chuột vào khung cảnh để tự tay đặt khối!</span>
+            </div>
+
+            <!-- Khung chat Minecraft in-game -->
+            <div class="mc-chat" id="mc-chat" aria-live="polite">
+              <div class="mc-chat__msg mc-chat__msg--sys">[Hệ thống] Chào mừng bạn đến với VNPlay SMP!</div>
+              <div class="mc-chat__msg mc-chat__msg--hint">[Mẹo] Chọn khối ở thanh Hotbar bên dưới rồi bấm để xây.</div>
+            </div>
+
+            <!-- Tâm ngắm Minecraft Crosshair (+) -->
+            <div class="mc-crosshair" id="mc-crosshair" aria-hidden="true">+</div>
+
+            <!-- HUD đáy: Máu, Độ đói, Exp và Thanh Hotbar 9 ô -->
+            <div class="mc-hud__bottom">
+              <!-- Máu và Độ đói -->
+              <div class="mc-stats-row" aria-hidden="true">
+                <div class="mc-hearts" title="Máu: 20/20">
+                  <span>❤️</span><span>❤️</span><span>❤️</span><span>❤️</span><span>❤️</span>
+                  <span>❤️</span><span>❤️</span><span>❤️</span><span>❤️</span><span>❤️</span>
+                </div>
+                <div class="mc-exp">
+                  <div class="mc-exp__bar"></div>
+                  <span class="mc-exp__num">30</span>
+                </div>
+                <div class="mc-hunger" title="Độ đói: 20/20">
+                  <span>🍗</span><span>🍗</span><span>🍗</span><span>🍗</span><span>🍗</span>
+                  <span>🍗</span><span>🍗</span><span>🍗</span><span>🍗</span><span>🍗</span>
+                </div>
+              </div>
+
+              <!-- Thanh Hotbar 9 ô chuẩn Minecraft -->
+              <div class="mc-hotbar" id="mc-hotbar" role="toolbar" aria-label="Thanh công cụ Hotbar">
+                <button type="button" class="mc-slot" data-slot="0" data-block="pickaxe" data-name="Cúp kim cương (Nhấp chuột để đập khối)">
+                  <img src="./assets/textures/diamond_pickaxe.png" alt="Cúp kim cương" width="26" height="26">
+                  <span class="mc-slot__num">1</span>
+                </button>
+                <button type="button" class="mc-slot" data-slot="1" data-block="oak_log" data-name="Gỗ sồi nguyên khối (Oak Log)">
+                  <img src="./assets/textures/oak_log.png" alt="Gỗ sồi" width="26" height="26">
+                  <span class="mc-slot__count">64</span>
+                  <span class="mc-slot__num">2</span>
+                </button>
+                <button type="button" class="mc-slot is-selected" data-slot="2" data-block="oak_planks" data-name="Ván gỗ sồi (Oak Planks)">
+                  <img src="./assets/textures/oak_planks.png" alt="Ván gỗ sồi" width="26" height="26">
+                  <span class="mc-slot__count">64</span>
+                  <span class="mc-slot__num">3</span>
+                </button>
+                <button type="button" class="mc-slot" data-slot="3" data-block="stone_bricks" data-name="Gạch đá (Stone Bricks)">
+                  <img src="./assets/textures/stone_bricks.png" alt="Gạch đá" width="26" height="26">
+                  <span class="mc-slot__count">64</span>
+                  <span class="mc-slot__num">4</span>
+                </button>
+                <button type="button" class="mc-slot" data-slot="4" data-block="cobblestone" data-name="Đá cuội (Cobblestone)">
+                  <img src="./assets/textures/cobblestone.png" alt="Đá cuội" width="26" height="26">
+                  <span class="mc-slot__count">64</span>
+                  <span class="mc-slot__num">5</span>
+                </button>
+                <button type="button" class="mc-slot" data-slot="5" data-block="bricks" data-name="Gạch nung đỏ (Bricks)">
+                  <img src="./assets/textures/bricks.png" alt="Gạch nung đỏ" width="26" height="26">
+                  <span class="mc-slot__count">64</span>
+                  <span class="mc-slot__num">6</span>
+                </button>
+                <button type="button" class="mc-slot" data-slot="6" data-block="glass" data-name="Kính trong suốt (Glass Block)">
+                  <img src="./assets/textures/glass.png" alt="Kính trong suốt" width="26" height="26">
+                  <span class="mc-slot__count">32</span>
+                  <span class="mc-slot__num">7</span>
+                </button>
+                <button type="button" class="mc-slot" data-slot="7" data-block="glowstone" data-name="Đá phát sáng (Glowstone - Chiếu sáng)">
+                  <img src="./assets/textures/glowstone.png" alt="Đá phát sáng" width="26" height="26">
+                  <span class="mc-slot__count">16</span>
+                  <span class="mc-slot__num">8</span>
+                </button>
+                <button type="button" class="mc-slot" data-slot="8" data-block="golden_shovel" data-name="Xẻng vàng (Khoanh vùng Claim bảo vệ đất)">
+                  <img src="./assets/textures/golden_shovel.png" alt="Xẻng vàng claim đất" width="26" height="26">
+                  <span class="mc-slot__num">9</span>
+                </button>
+              </div>
+
+              <!-- Tooltip tên khối đang chọn -->
+              <div class="mc-tooltip" id="mc-tooltip">Ván gỗ sồi (Oak Planks)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scrolly__steps">
+          <article class="step" data-step="1" data-label="06:00 · Đặt chân">
+            <span class="step__num">01</span>
+            <h3>Đặt chân vào thế giới</h3>
+            <p>Kết nối với máy chủ và bắt đầu từ điểm xuất hiện. Hướng dẫn trong game giúp bạn làm quen với thế giới.</p>
+          </article>
+          <article class="step" data-step="2" data-label="09:00 · Xây dựng">
+            <span class="step__num">02</span>
+            <h3>Xây từng khối một</h3>
+            <p>Thu thập tài nguyên, chọn nơi dựng nhà và tạo nên công trình của riêng bạn.</p>
+          </article>
+          <article class="step" data-step="3" data-label="14:00 · Hàng xóm">
+            <span class="step__num">03</span>
+            <h3>Gặp những người hàng xóm</h3>
+            <p>Gặp gỡ người chơi khác, cùng khám phá và tạo nên những câu chuyện trong game.</p>
+          </article>
+          <article class="step" data-step="4" data-label="18:00 · Bảo vệ">
+            <span class="step__num">04</span>
+            <h3>Đất của bạn được bảo vệ</h3>
+            <p>Công cụ bảo vệ khu vực và nhật ký khối hỗ trợ quản lý công trình. Cách xử lý cụ thể tùy tình huống.</p>
+          </article>
+          <article class="step" data-step="5" data-label="21:00 · Sự kiện">
+            <span class="step__num">05</span>
+            <h3>Tối đến, cả server cùng vui</h3>
+            <p>Các hoạt động cộng đồng có thể diễn ra theo lịch của máy chủ. Theo dõi thông tin mới nhất trước khi tham gia.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY / THƯ VIỆN HÌNH ẢNH MINECRAFT -->
+    <section class="gallery" id="gallery">
+      <div class="container">
+        <div class="gallery__head">
+          <div class="gallery__head-text">
+            <p class="eyebrow reveal">Thư viện thế giới</p>
+            <h2 class="reveal">Khám phá thế giới Minecraft thực tế</h2>
+            <p class="reveal">Một vài góc nhìn về công trình, cảnh quan và những chuyến phiêu lưu trong Minecraft.</p>
+          </div>
+          <!-- Filter pills -->
+          <div class="gallery__filters reveal" role="tablist" aria-label="Bộ lọc thư viện ảnh">
+            <button type="button" class="filter-pill is-active" data-filter="all">Tất cả (17)</button>
+            <button type="button" class="filter-pill" data-filter="build">Kiến trúc &amp; Công trình (3)</button>
+            <button type="button" class="filter-pill" data-filter="biome">Sinh tồn &amp; Biomes (8)</button>
+            <button type="button" class="filter-pill" data-filter="dimension">Nether &amp; The End (4)</button>
+            <button type="button" class="filter-pill" data-filter="tech">Kỹ thuật &amp; Khám phá (2)</button>
+          </div>
+        </div>
+
+        <div class="gallery__grid" id="gallery-grid">
+          <!-- Item 1: Cathedral -->
+          <article class="g-card reveal" data-category="build" data-index="0">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Đại giáo đường cổ kính">
+              <div class="g-card__media">
+                <img src="./assets/images/cathedral.jpg" alt="Đại giáo đường cổ kính" width="1600" height="1200" loading="lazy">
+                <span class="g-card__tag">Kiến trúc</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Đại giáo đường cổ kính</h3>
+                <p>Công trình kiến trúc Gothic đồ sộ với mái vòm đối xứng và tháp chuông uy nghiêm.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 2: Mountains -->
+          <article class="g-card reveal" data-category="biome" data-index="1">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Đỉnh núi tuyết hùng vĩ">
+              <div class="g-card__media">
+                <img src="./assets/images/mountains.jpg" alt="Đỉnh núi tuyết hùng vĩ 1.18" width="1266" height="788" loading="lazy">
+                <span class="g-card__tag">Địa hình</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Đỉnh núi tuyết hùng vĩ</h3>
+                <p>Những rặng núi tuyết chạm tầng mây Y=256, nơi lý tưởng để xây cứ điểm trên cao.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 3: Shaders Sunset -->
+          <article class="g-card reveal" data-category="biome" data-index="2">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Hoàng hôn hồ nước Shaders">
+              <div class="g-card__media">
+                <img src="./assets/images/shaders_sunset.jpg" alt="Hoàng hôn hồ nước Shaders" width="1600" height="1067" loading="lazy">
+                <span class="g-card__tag">Shaders</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Hoàng hôn hồ nước Shaders</h3>
+                <p>Mặt nước phẳng lặng rọi bóng hoàng hôn rực rỡ bên thung lũng sinh tồn.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 4: Castle on Cliff -->
+          <article class="g-card reveal" data-category="build" data-index="3">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Pháo đài lâu đài trên vách đá">
+              <div class="g-card__media">
+                <img src="./assets/images/blocks_castle.jpg" alt="Pháo đài lâu đài trên vách đá" width="1600" height="1200" loading="lazy">
+                <span class="g-card__tag">Kiến trúc</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Pháo đài trên vách đá</h3>
+                <p>Lâu đài kiên cố với cầu treo bắc qua khe núi và hệ thống tường thành phòng thủ.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 5: Cathedral Front -->
+          <article class="g-card reveal" data-category="build" data-index="4">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Mặt tiền thánh đường Gothic">
+              <div class="g-card__media">
+                <img src="./assets/images/cathedral_front.jpg" alt="Mặt tiền thánh đường Gothic" width="1600" height="1200" loading="lazy">
+                <span class="g-card__tag">Kiến trúc</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Mặt tiền thánh đường Gothic</h3>
+                <p>Chi tiết điêu khắc tinh xảo ghép từ từng khối đá thạch anh và cửa sổ kính hoa văn.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 6: Lush Caves -->
+          <article class="g-card reveal" data-category="biome" data-index="5">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Hang động xanh Lush Caves">
+              <div class="g-card__media">
+                <img src="./assets/images/lush_caves.jpg" alt="Hang động xanh Lush Caves" width="1024" height="704" loading="lazy">
+                <span class="g-card__tag">Hang động</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Hang động xanh Lush Caves</h3>
+                <p>Thế giới thần tiên dưới lòng đất với rêu xanh, quả phát sáng và hoa đỗ quyên dịu mắt.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 7: Deep Dark -->
+          <article class="g-card reveal" data-category="biome" data-index="6">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Vùng tối sâu thẳm Deep Dark">
+              <div class="g-card__media">
+                <img src="./assets/images/deep_dark.png" alt="Vùng tối sâu thẳm Deep Dark" width="1920" height="1080" loading="lazy">
+                <span class="g-card__tag">Hang động</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Vùng tối Deep Dark &amp; Thành cổ</h3>
+                <p>Độ sâu âm Y bí hiểm với khối Sculk cảm biến rung chấn và tàn tích cổ xưa.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 8: Jungle -->
+          <article class="g-card reveal" data-category="biome" data-index="7">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Rừng nhiệt đới Jungle">
+              <div class="g-card__media">
+                <img src="./assets/images/jungle.jpg" alt="Rừng nhiệt đới Jungle" width="1920" height="960" loading="lazy">
+                <span class="g-card__tag">Địa hình</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Rừng nhiệt đới Jungle</h3>
+                <p>Cây cổ thụ cao vút nối liền tán lá rậm rạp, tre xanh và tiếng vẹt ríu rít.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 9: Taiga -->
+          <article class="g-card reveal" data-category="biome" data-index="8">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Rừng thông Taiga mùa đông">
+              <div class="g-card__media">
+                <img src="./assets/images/taiga.jpg" alt="Rừng thông Taiga mùa đông" width="1920" height="960" loading="lazy">
+                <span class="g-card__tag">Địa hình</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Rừng thông Taiga</h3>
+                <p>Khung cảnh yên ả của rừng cây lá kim phủ tuyết mỏng với căn nhà gỗ thông ấm áp.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 10: Frozen Ocean -->
+          <article class="g-card reveal" data-category="biome" data-index="9">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Đại dương băng giá">
+              <div class="g-card__media">
+                <img src="./assets/images/frozen_ocean.jpg" alt="Đại dương băng giá" width="1920" height="960" loading="lazy">
+                <span class="g-card__tag">Băng tuyết</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Đại dương băng giá</h3>
+                <p>Những núi băng xanh ngắt sừng sững giữa biển lạnh giá nguyên sơ và gấu tuyết.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 11: Village -->
+          <article class="g-card reveal" data-category="biome" data-index="10">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Ngôi làng bình dị giữa đồng bằng">
+              <div class="g-card__media">
+                <img src="./assets/images/village.jpg" alt="Ngôi làng bình dị giữa đồng bằng" width="832" height="704" loading="lazy">
+                <span class="g-card__tag">Sinh tồn</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Ngôi làng Plains Village</h3>
+                <p>Nơi bắt đầu ấm cúng với những cánh đồng lúa mì, lò rèn và bạn bè hàng xóm.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 12: Nether -->
+          <article class="g-card reveal" data-category="dimension" data-index="11">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Rừng Crimson Nether">
+              <div class="g-card__media">
+                <img src="./assets/images/nether.png" alt="Rừng Crimson Nether" width="1920" height="960" loading="lazy">
+                <span class="g-card__tag">Nether</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Rừng Crimson Nether</h3>
+                <p>Hỏa ngục rực lửa với nấm khổng lồ đỏ thẫm, thác dung nham và pháo đài u ám.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 13: End City -->
+          <article class="g-card reveal" data-category="dimension" data-index="12">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Thành phố End City">
+              <div class="g-card__media">
+                <img src="./assets/images/end_city.jpg" alt="Thành phố End City" width="1920" height="1024" loading="lazy">
+                <span class="g-card__tag">The End</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Thành phố End City &amp; Thuyền bay</h3>
+                <p>Những tòa tháp Purpur vươn vào vũ trụ, phần thưởng xứng đáng với cánh bay Elytra.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 14: End Dragon -->
+          <article class="g-card reveal" data-category="dimension" data-index="13">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Đảo rồng Ender">
+              <div class="g-card__media">
+                <img src="./assets/images/end_dragon.png" alt="Đảo rồng Ender" width="1920" height="960" loading="lazy">
+                <span class="g-card__tag">The End</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Đảo rồng Ender</h3>
+                <p>Chiến trường đối đầu Rồng Ender giữa các cột đá Obsidian và tinh thể Ender Crystal.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 15: Piglins -->
+          <article class="g-card reveal" data-category="dimension" data-index="14">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Pháo đài Bastion & Piglin">
+              <div class="g-card__media">
+                <img src="./assets/images/piglins.jpg" alt="Pháo đài Bastion & Piglin" width="1920" height="960" loading="lazy">
+                <span class="g-card__tag">Nether</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Pháo đài Bastion &amp; Tộc Piglin</h3>
+                <p>Giao dịch thỏi vàng cùng tộc Piglin để tìm kiếm ngọc Ender và khoáng vật quý giá.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 16: Diamond Mining -->
+          <article class="g-card reveal" data-category="tech" data-index="15">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Khai thác quặng kim cương Deepslate">
+              <div class="g-card__media">
+                <img src="./assets/images/diamond_mining.png" alt="Khai thác quặng kim cương Deepslate" width="1920" height="1080" loading="lazy">
+                <span class="g-card__tag">Khai khoáng</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Đào quặng kim cương Deepslate</h3>
+                <p>Cảm giác thót tim khi phát hiện vỉa kim cương 8 khối dưới độ sâu Y=-58.</p>
+              </div>
+            </button>
+          </article>
+
+          <!-- Item 17: Redstone -->
+          <article class="g-card reveal" data-category="tech" data-index="16">
+            <button type="button" class="g-card__btn js-lightbox-trigger" aria-label="Xem ảnh: Cơ khí đá đỏ Redstone chuyên sâu">
+              <div class="g-card__media">
+                <img src="./assets/images/redstone.png" alt="Cơ khí đá đỏ Redstone chuyên sâu" width="1600" height="900" loading="lazy">
+                <span class="g-card__tag">Cơ khí</span>
+                <span class="g-card__icon" aria-hidden="true"><svg class="ico"><use href="#i-expand"/></svg></span>
+              </div>
+              <div class="g-card__info">
+                <h3>Cơ khí đá đỏ Redstone</h3>
+                <p>Hệ thống tự động hóa máy móc, cửa piston mật và cỗ máy phân loại đồ thông minh.</p>
+              </div>
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+      <div class="container">
+        <p class="eyebrow reveal">Trải nghiệm</p>
+        <h2 class="reveal">Những gì bạn nhận được</h2>
+        <div class="grid grid--3">
+          <article class="card reveal">
+            <div class="card__thumb">
+              <img src="./assets/images/mountains.jpg" alt="Survival nguyên bản" loading="lazy">
+            </div>
+            <svg class="card__icon" aria-hidden="true"><use href="#i-pick"/></svg>
+            <h3>Sinh tồn theo cách của bạn</h3>
+            <p>Khám phá, thu thập và xây dựng trong thế giới Minecraft Survival.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__thumb">
+              <img src="./assets/images/cathedral.jpg" alt="Claim đất & rollback" loading="lazy">
+            </div>
+            <svg class="card__icon" aria-hidden="true"><use href="#i-home"/></svg>
+            <h3>Claim đất &amp; rollback</h3>
+            <p>Công cụ khoanh vùng và nhật ký khối hỗ trợ quản lý khu vực xây dựng.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__thumb">
+              <img src="./assets/images/village.jpg" alt="Java & Bedrock" loading="lazy">
+            </div>
+            <svg class="card__icon" aria-hidden="true"><use href="#i-globe"/></svg>
+            <h3>Java &amp; Bedrock</h3>
+            <p>Hỗ trợ Java và Bedrock. Khả năng kết nối tùy phiên bản và nền tảng.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__thumb">
+              <img src="./assets/images/shaders_sunset.jpg" alt="Cộng đồng có kiểm duyệt" loading="lazy">
+            </div>
+            <svg class="card__icon" aria-hidden="true"><use href="#i-users"/></svg>
+            <h3>Cộng đồng có kiểm duyệt</h3>
+            <p>Có quy tắc cộng đồng và kênh hỗ trợ để bạn gửi câu hỏi khi cần.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__thumb">
+              <img src="./assets/images/diamond_mining.png" alt="Không pay‑to‑win" loading="lazy">
+            </div>
+            <svg class="card__icon" aria-hidden="true"><use href="#i-flag"/></svg>
+            <h3>Tập trung vào trải nghiệm chơi</h3>
+            <p>Trải nghiệm được xây quanh việc khám phá, chế tạo và phát triển trong game.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__thumb">
+              <img src="./assets/images/end_dragon.png" alt="Sự kiện định kỳ" loading="lazy">
+            </div>
+            <svg class="card__icon" aria-hidden="true"><use href="#i-star"/></svg>
+            <h3>Sự kiện định kỳ</h3>
+            <p>Các hoạt động như xây dựng, khám phá và săn boss có thể được tổ chức theo từng dịp.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUST / INFRA -->
+    <section class="trust" id="trust">
+      <div class="container trust__inner">
+        <div class="trust__text">
+          <p class="eyebrow reveal">Uy tín &amp; hạ tầng</p>
+          <h2 class="reveal">Được vận hành nghiêm túc</h2>
+          <p class="reveal">Thông tin vận hành được trình bày rõ ràng để bạn biết những gì đang có trước khi tham gia.</p>
+          <ul class="checks reveal">
+            <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Máy chủ được vận hành tại Việt Nam</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Có quy trình sao lưu thế giới</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Có công cụ theo dõi thay đổi khối</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Cập nhật thông tin bảo trì khi cần</li>
+          </ul>
+        </div>
+
+        <!-- Số liệu server -->
+        <div class="telemetry reveal" id="telemetry">
+          <div class="telemetry__header">
+            <div class="telemetry__status">
+              <span class="dot is-online" aria-hidden="true"></span>
+              <span>Thông tin máy chủ</span>
+            </div>
+            <span class="telemetry__tag">Trạng thái trực tiếp</span>
+          </div>
+
+          <div class="telemetry__grid">
+            <div class="telemetry__card">
+              <div class="telemetry__top">
+                <svg class="telemetry__icon" aria-hidden="true"><use href="#i-clock"/></svg>
+                <span class="telemetry__pill">Uptime</span>
+              </div>
+              <div class="telemetry__num">Trực tiếp</div>
+              <span class="telemetry__label">Trạng thái máy chủ</span>
+            </div>
+
+            <div class="telemetry__card">
+              <div class="telemetry__top">
+                <svg class="telemetry__icon" aria-hidden="true"><use href="#i-zap"/></svg>
+                <span class="telemetry__pill">Ping</span>
+              </div>
+              <div class="telemetry__num">Việt Nam</div>
+              <span class="telemetry__label">Vị trí máy chủ</span>
+            </div>
+
+            <div class="telemetry__card">
+              <div class="telemetry__top">
+                <svg class="telemetry__icon" aria-hidden="true"><use href="#i-save"/></svg>
+                <span class="telemetry__pill">Sao lưu</span>
+              </div>
+              <div class="telemetry__num">Theo lịch</div>
+              <span class="telemetry__label">Sao lưu thế giới</span>
+            </div>
+
+            <div class="telemetry__card">
+              <div class="telemetry__top">
+                <svg class="telemetry__icon" aria-hidden="true"><use href="#i-shield"/></svg>
+                <span class="telemetry__pill">An toàn</span>
+              </div>
+              <div class="telemetry__num">Nhật ký</div>
+              <span class="telemetry__label">Theo dõi thay đổi khối</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RULES / COMMITMENTS -->
+    <section class="rules" id="rules">
+      <div class="container">
+        <p class="eyebrow reveal">Cam kết</p>
+        <h2 class="reveal">Những điều chúng tôi giữ</h2>
+        <ol class="timeline">
+          <li class="reveal">
+            <h3>Thông tin mùa chơi</h3>
+            <p>Kế hoạch về thế giới và mùa chơi được cập nhật qua kênh thông tin của máy chủ.</p>
+          </li>
+          <li class="reveal">
+            <h3>Quy tắc rõ ràng</h3>
+            <p>Đọc quy tắc hiện hành trước khi tham gia để hiểu cách cộng đồng vận hành.</p>
+          </li>
+          <li class="reveal">
+            <h3>Hỗ trợ khi cần</h3>
+            <p>Liên hệ đội ngũ vận hành nếu bạn cần hướng dẫn hoặc có câu hỏi về máy chủ.</p>
+          </li>
+          <li class="reveal">
+            <h3>Cùng góp ý</h3>
+            <p>Gửi đề xuất để chia sẻ ý tưởng về trải nghiệm chơi.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- CONTACT CTA -->
+    <section class="cta" id="contact">
+      <div class="container cta__box reveal">
+        <svg class="cta__icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+        <h2>Bắt đầu hành trình của bạn.</h2>
+        <p>Liên hệ để nhận thông tin kết nối và hướng dẫn tham gia VNPlay SMP.</p>
+        <div class="cta__actions">
+          <a class="btn btn--primary btn--lg" href="mailto:support@vnplaysmp.vn">
+            <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg><span>Liên hệ ngay</span>
+          </a>
+          <a class="btn btn--ghost btn--lg" href="#gallery">
+            <svg class="ico" aria-hidden="true"><use href="#i-image"/></svg><span>Khám phá thư viện ảnh</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+      <div class="container faq__inner">
+        <div>
+          <p class="eyebrow reveal">Hỏi đáp</p>
+          <h2 class="reveal">Trước khi vào</h2>
+        </div>
+        <div class="accordion reveal" id="accordion">
+          <details>
+            <summary>Tham gia có mất phí không?<svg class="ico" aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+            <div class="accordion__body"><p>Liên hệ để biết thông tin tham gia và các điều kiện hiện hành.</p></div>
+          </details>
+          <details>
+            <summary>Cần phiên bản Minecraft nào?<svg class="ico" aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+            <div class="accordion__body"><p>Phiên bản tương thích có thể thay đổi. Liên hệ để kiểm tra thông tin kết nối hiện tại.</p></div>
+          </details>
+          <details>
+            <summary>Java và Bedrock có thể chơi cùng nhau?<svg class="ico" aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+            <div class="accordion__body"><p>Máy chủ có hỗ trợ Java và Bedrock. Khả năng kết nối tùy phiên bản; liên hệ để xác nhận trước khi vào.</p></div>
+          </details>
+          <details>
+            <summary>Nếu bị phá nhà thì sao?<svg class="ico" aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+            <div class="accordion__body"><p>Gửi thông tin khu vực và mô tả sự việc qua kênh hỗ trợ. Đội ngũ sẽ xem xét theo công cụ và thông tin hiện có.</p></div>
+          </details>
+          <details>
+            <summary>Tôi muốn góp ý hoặc làm cộng tác viên?<svg class="ico" aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+            <div class="accordion__body"><p>Bạn có thể gửi đề xuất hoặc hỏi về cơ hội cộng tác qua kênh liên hệ.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <a href="#hero" class="brand">
+          <svg class="brand__mark" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cube"/></svg>
+          <span class="brand__name">VNPlay <em>SMP</em></span>
+        </a>
+        <p class="footer__note">Máy chủ Minecraft Survival cộng đồng Việt Nam.</p>
+      </div>
+      <nav class="footer__links" aria-label="Liên kết chân trang">
+        <a href="#story">Hành trình</a>
+        <a href="#gallery">Thư viện</a>
+        <a href="#features">Trải nghiệm</a>
+        <a href="#rules">Cam kết</a>
+        <a href="#contact">Liên hệ ngay</a>
+      </nav>
+    </div>
+    <div class="container footer__legal">
+      <p>VNPlay SMP không phải sản phẩm chính thức của Minecraft, không liên kết hay được tài trợ bởi Mojang Studios hoặc Microsoft. Trang web chỉ nhằm giới thiệu, không thực hiện giao dịch mua bán.</p>
+      <p>© <span id="year"></span> VNPlay SMP</p>
+      <p>Designed and Execution by <a href="https://www.hugowishpax.studio">Hugo Studio</a></p>
+    </div>
+  </footer>
+
+  <!-- LIGHTBOX MODAL CHO THƯ VIỆN ẢNH -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Trình xem ảnh Minecraft độ phân giải cao" hidden>
+    <div class="lightbox__backdrop" id="lightbox-backdrop"></div>
+    <div class="lightbox__content">
+      <button type="button" class="lightbox__close" id="lightbox-close" aria-label="Đóng (Phím Esc)">
+        <svg class="ico" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+
+      <button type="button" class="lightbox__nav lightbox__nav--prev" id="lightbox-prev" aria-label="Ảnh trước (Mũi tên trái)">
+        <svg class="ico" aria-hidden="true" style="transform: rotate(90deg);"><use href="#i-chevron"/></svg>
+      </button>
+
+      <div class="lightbox__figure">
+        <div class="lightbox__img-wrap">
+          <img class="lightbox__img" id="lightbox-img" src="" alt="">
+        </div>
+        <div class="lightbox__meta">
+          <div class="lightbox__meta-head">
+            <span class="lightbox__tag" id="lightbox-tag"></span>
+            <span class="lightbox__counter" id="lightbox-counter">1 / 17</span>
+          </div>
+          <h3 class="lightbox__title" id="lightbox-title"></h3>
+          <p class="lightbox__desc" id="lightbox-desc"></p>
+        </div>
+      </div>
+
+      <button type="button" class="lightbox__nav lightbox__nav--next" id="lightbox-next" aria-label="Ảnh sau (Mũi tên phải)">
+        <svg class="ico" aria-hidden="true" style="transform: rotate(-90deg);"><use href="#i-chevron"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
