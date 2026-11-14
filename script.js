@@ -7,17 +7,6 @@ const CONFIG = Object.freeze({
   statusApi: 'https://api.mcsrvstat.us/3/',
 });
 
-/** Hiện thông báo ngắn ở đáy màn hình. */
-class Toast {
-  constructor(el) { this.el = el; this.timer = 0; }
-  show(msg, ms = 1800) {
-    this.el.textContent = msg;
-    this.el.classList.add('is-on');
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.el.classList.remove('is-on'), ms);
-  }
-}
-
 /** Thanh tiến độ cuộn + header co lại khi cuộn. */
 class ScrollChrome {
   constructor(progress, header) {
@@ -37,7 +26,7 @@ class Nav {
   constructor(nav, toggle, backdrop) {
     this.nav = nav; this.toggle = toggle;
     this.backdrop = backdrop;
-    this.links = [...nav.querySelectorAll('a[href^="#"]')];
+    this.links = [...nav.querySelectorAll('a')];
     toggle.addEventListener('click', () => this.setOpen(!this.isOpen));
     this.links.forEach(a => a.addEventListener('click', () => this.setOpen(false)));
     backdrop.addEventListener('click', () => this.setOpen(false));
@@ -54,7 +43,7 @@ class Nav {
     this.toggle.setAttribute('aria-label', open ? 'Đóng menu' : 'Mở menu');
   }
   observeSections() {
-    const byId = new Map(this.links.map(a => [a.hash.slice(1), a]));
+    const byId = new Map(this.links.filter(a => a.hash).map(a => [a.hash.slice(1), a]));
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (!e.isIntersecting) return;
@@ -142,28 +131,6 @@ class Ambient {
   }
 }
 
-/** Đếm số từ 0 tới data-to khi vào khung nhìn. */
-class Counter {
-  constructor(selector = '.count', duration = 1400) {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        this.run(e.target, duration); io.unobserve(e.target);
-      });
-    }, { threshold: .5 });
-    document.querySelectorAll(selector).forEach(el => io.observe(el));
-  }
-  run(el, duration) {
-    const to = parseFloat(el.dataset.to), dec = +el.dataset.decimals || 0, t0 = performance.now();
-    const frame = now => {
-      const p = Math.min(1, (now - t0) / duration), ease = 1 - Math.pow(1 - p, 3);
-      el.textContent = (to * ease).toFixed(dec);
-      if (p < 1) requestAnimationFrame(frame);
-    };
-    requestAnimationFrame(frame);
-  }
-}
-
 /** Scrollytelling: bước nào ở giữa màn hình thì stage nhận data-step tương ứng. */
 class Scrolly {
   constructor(root, scene, label) {
@@ -179,6 +146,7 @@ class Scrolly {
     this.steps.forEach(s => s.classList.toggle('is-active', s === step));
     const stepNum = step.dataset.step;
     this.scene.dataset.step = stepNum;
+    this.scene.closest('.story').dataset.step = stepNum;
     this.label.textContent = step.dataset.label;
     this.photos.forEach(p => p.classList.toggle('is-active', p.dataset.photo === stepNum));
   }
@@ -189,7 +157,7 @@ class ServerStatus {
   constructor(ip, api) {
     this.ip = ip; this.api = api;
     this.els = {
-      dots: document.querySelectorAll('.dot'),
+      dots: document.querySelectorAll('[data-server-status]'),
       status: document.getElementById('hud-status'),
       players: document.getElementById('hud-players'),
       version: document.getElementById('hud-version'),
@@ -200,15 +168,19 @@ class ServerStatus {
   async refresh() {
     try {
       const r = await fetch(this.api + this.ip, { cache: 'no-store' });
+      if (!r.ok) throw new Error(`Server status request failed: ${r.status}`);
       const d = await r.json();
       this.render(d);
-    } catch (_) { this.render(null); }
+    } catch (error) {
+      console.warn('Không thể tải trạng thái máy chủ:', error);
+      this.render(null);
+    }
   }
   render(d) {
     const online = !!d?.online;
     this.els.dots.forEach(x => { x.classList.toggle('is-online', online); x.classList.toggle('is-offline', !online); });
     const values = [
-      [this.els.status, d ? (online ? 'Trực tuyến' : 'Ngoại tuyến') : 'Không rõ'],
+      [this.els.status, d ? (online ? 'Trực tuyến' : 'Ngoại tuyến') : 'Không khả dụng'],
       [this.els.players, online ? `${d.players?.online ?? 0} / ${d.players?.max ?? '—'}` : '—'],
       [this.els.version, online && d.version ? d.version : '—'],
     ];
@@ -383,14 +355,12 @@ class App {
     const $ = id => document.getElementById(id);
     $('year').textContent = new Date().getFullYear();
 
-    this.toast = new Toast($('toast'));
     new ScrollChrome($('progress'), $('header'));
     new Nav($('nav'), $('nav-toggle'), $('nav-backdrop'));
     new Reveal();
     new SplitTitle(document.querySelector('[data-split]'));
     new Parallax(document.querySelector('.hero__blocks'));
     new Ambient($('ambient'));
-    new Counter();
     new Scrolly($('scrolly'), $('scene'), $('scene-label'));
     new ServerStatus(CONFIG.ip, CONFIG.statusApi);
     new Accordion($('accordion'));
@@ -399,5 +369,13 @@ class App {
     new Gallery($('gallery-grid'), this.lightbox);
   }
 }
+
+/* Khoá zoom: iOS bỏ qua user-scalable=no nên chặn thêm cử chỉ pinch, Ctrl/⌘ + cuộn và Ctrl/⌘ + phím +/-/0. */
+addEventListener('gesturestart', e => e.preventDefault());
+addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && ['+', '-', '=', '0'].includes(e.key)) e.preventDefault();
+});
 
 addEventListener('DOMContentLoaded', () => new App());

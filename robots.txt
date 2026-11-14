@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shonejok2705-stack.github.io/vnplay_smp/sitemap.xml
